@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/*
+ * Legend Rajwada theme — extracted directly from the reference site's
+ * compiled CSS (legend-rajwada-bkobcf4g.myshopify.com), not guessed.
+ * See ../../../../Rana_Community_Hub_UIUX_Design_Theme.md for the full spec.
+ * Full-dark site by decision — the only intentional light surfaces are the
+ * Family Tree person cards (legibility/data-density, not a color choice).
+ */
+@theme {
+  --color-ink: #0b0b0b; /* primary near-black */
+  --color-ink-soft: #1a1816; /* elevated dark surface */
+  --color-ink-card: #121110; /* card dark surface */
+  --color-gold: #c9a96e; /* secondary — main gold accent/heading highlight */
+  --color-gold-light: #e0c99a; /* accent-light — lighter champagne gold */
+  --color-bronze: #a07d4a; /* accent — deeper muted bronze */
+  --color-ivory: #f0ede8; /* text-main — reference value, currently unused site-wide (all text is gold per user decision) */
+  --color-muted: #9a9590; /* secondary text — reference value, currently unused site-wide (use text-gold/70 instead) */
+  --color-charcoal: #1f1f1f; /* dark text — used only on the light family-tree cards */
+  --color-success: #6b8e6b;
+  --color-danger: #c75050;
+
+  --font-heading:
+    var(--font-cinzel), var(--font-playfair), serif;
+  --font-body:
+    var(--font-inter), 'Segoe UI', sans-serif;
+
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-gold-glow: 0 0 30px rgba(201, 169, 110, 0.08);
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-gold);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+}

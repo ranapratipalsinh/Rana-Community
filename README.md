@@ -6,7 +6,7 @@ Planning docs live one level up in `../` — [BRD/SAD](../Rana_Community_Hub_BRD
 
 ## Status
 
-Phase 0 through 4 are built: project foundation, Super Admin auth, the reusable Village template, the Family Tree / genealogy system (React Flow + dagre, search, privacy controls), the community content modules (Events, News, Gallery, Committee, Documents), and now Contact Us, global search, News/Gallery filtering, SEO (sitemap, robots.txt, Open Graph, structured data), security hardening (login lockout, secure cookies), and an audit log for admin/genealogy changes. Everything is styled with the approved "Rajwada" black & gold theme and responsive across desktop/tablet/mobile. See the [phase plan](../Rana_Community_Hub_Phasewise_Development_Plan.md) for the full breakdown.
+Phase 0 through 4 are built: project foundation, Super Admin auth, the reusable Village template, the Family Tree / genealogy system (React Flow + dagre, search, privacy controls), the community content modules (Events, News, Gallery, Committee, Documents), and now Contact Us, global search, News/Gallery filtering, SEO (sitemap, robots.txt, Open Graph, structured data), security hardening (login lockout, secure cookies), and an audit log for admin/genealogy changes. Everything is styled with the "Legend Rajwada" dark theme (exact palette/fonts pulled from the real reference site) and responsive across desktop/tablet/mobile. See the [phase plan](../Rana_Community_Hub_Phasewise_Development_Plan.md) for the full breakdown.
 
 ## Prerequisites
 

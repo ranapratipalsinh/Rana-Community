@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import { getPayloadClient } from '@/lib/payload'
 import { RichText } from '@/components/RichText'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { HeroSlideshow } from '@/components/site/HeroSlideshow'
 import { VillagesCarousel } from '@/components/site/VillagesCarousel'
 import type { Event, GalleryItem, Media, News as NewsItem, Village } from '@/payload-types'
@@ -101,15 +101,11 @@ export default async function HomePage() {
               </p>
             ) : null}
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/villages">
-                <Button variant="primary" size="lg">
-                  Explore Our Villages
-                </Button>
+              <Link href="/villages" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+                Explore Our Villages
               </Link>
-              <Link href="/about">
-                <Button variant="outline" size="lg">
-                  About Us
-                </Button>
+              <Link href="/about" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
+                About Us
               </Link>
             </div>
           </div>
@@ -128,17 +124,22 @@ export default async function HomePage() {
         <section className="border-t border-gold/10 bg-ink-soft px-4 py-14">
           <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
             {(settings.home.history.image as Media | null)?.url ? (
-              <div className="relative aspect-[4/3] overflow-hidden border border-gold/30">
-                <Image
-                  src={(settings.home.history.image as Media).url as string}
-                  alt={
-                    (settings.home.history.image as Media).alt ||
-                    settings.home.history.heading ||
-                    'History'
-                  }
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative aspect-[4/3] overflow-hidden border border-gold/30 bg-ink-card">
+                <div className="absolute inset-0 p-8 sm:p-10">
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={(settings.home.history.image as Media).url as string}
+                      alt={
+                        (settings.home.history.image as Media).alt ||
+                        settings.home.history.heading ||
+                        'History'
+                      }
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
               </div>
             ) : null}
             <div>
@@ -278,6 +279,7 @@ export default async function HomePage() {
                       src={img.url}
                       alt={img.alt || item.caption || 'Gallery photo'}
                       fill
+                      sizes="(min-width: 768px) 16vw, 33vw"
                       className="object-cover"
                     />
                   </div>

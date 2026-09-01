@@ -21,6 +21,7 @@ export function VillagesCarousel({ villages }: { villages: Village[] }) {
                     src={cover.url}
                     alt={cover.alt || village.name}
                     fill
+                    sizes="(min-width: 640px) 340px, 280px"
                     className="object-cover"
                   />
                 ) : null}

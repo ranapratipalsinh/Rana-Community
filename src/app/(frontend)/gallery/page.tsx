@@ -133,6 +133,7 @@ export default async function GalleryPage({
                   src={img.url}
                   alt={img.alt || item.caption || 'Gallery photo'}
                   fill
+                  sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
                   className="object-cover transition-transform group-hover:scale-105"
                 />
               ) : item.type === 'video' && item.videoUrl ? (

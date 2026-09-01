@@ -15,13 +15,14 @@ export function HeroSlideshow({ images }: { images: { url: string; alt: string }
   }, [images.length])
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden bg-ink">
       {images.map((img, i) => (
         <Image
           key={img.url}
           src={img.url}
           alt={img.alt}
           fill
+          sizes="100vw"
           priority={i === 0}
           className={`object-cover transition-opacity duration-1000 ease-in-out ${
             i === index ? 'opacity-100' : 'opacity-0'

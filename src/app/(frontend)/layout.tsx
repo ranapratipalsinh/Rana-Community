@@ -57,7 +57,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" className={`${cinzel.variable} ${playfair.variable} ${inter.variable}`}>
-      <body className="flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col" suppressHydrationWarning>
         <Header siteName={siteName} logo={logo} />
         <main className="flex-1">{children}</main>
         <Footer siteName={siteName} contact={settings.contact} social={settings.social} />

@@ -58,7 +58,13 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
     <article className="mx-auto max-w-3xl px-4 py-14">
       {image?.url ? (
         <div className="relative aspect-video w-full overflow-hidden border border-gold/30">
-          <Image src={image.url} alt={image.alt || item.title} fill className="object-cover" />
+          <Image
+            src={image.url}
+            alt={image.alt || item.title}
+            fill
+            sizes="(min-width: 768px) 736px, 100vw"
+            className="object-cover"
+          />
         </div>
       ) : null}
 

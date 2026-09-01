@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation'
 
 import { getPayloadClient } from '@/lib/payload'
 import { RichText } from '@/components/RichText'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import type { Event, GalleryItem, Media, News as NewsItem, Village } from '@/payload-types'
 
 type Params = { slug: string }
@@ -87,6 +88,7 @@ export default async function VillageDetailPage({ params }: { params: Promise<Pa
             src={cover.url}
             alt={cover.alt || village.name}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -166,10 +168,11 @@ export default async function VillageDetailPage({ params }: { params: Promise<Pa
             <p className="mt-2 text-sm text-gold/70">
               Explore {village.name}&apos;s genealogy across generations.
             </p>
-            <Link href={`/villages/${village.slug}/family-tree`} className="mt-4 inline-block">
-              <Button variant="primary" size="sm">
-                View Family Tree
-              </Button>
+            <Link
+              href={`/villages/${village.slug}/family-tree`}
+              className={cn('mt-4', buttonVariants({ variant: 'primary', size: 'sm' }))}
+            >
+              View Family Tree
             </Link>
           </div>
         </aside>
@@ -255,6 +258,7 @@ export default async function VillageDetailPage({ params }: { params: Promise<Pa
                           src={img.url}
                           alt={img.alt || item.caption || village.name}
                           fill
+                          sizes="(min-width: 768px) 12vw, 25vw"
                           className="object-cover"
                         />
                       </div>

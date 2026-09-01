@@ -25,7 +25,13 @@ function EventCard({ event }: { event: Event }) {
       <Card>
         <CardImage>
           {cover?.url ? (
-            <Image src={cover.url} alt={cover.alt || event.title} fill className="object-cover" />
+            <Image
+              src={cover.url}
+              alt={cover.alt || event.title}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover"
+            />
           ) : null}
         </CardImage>
         <CardContent>

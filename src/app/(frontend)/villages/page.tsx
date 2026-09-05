@@ -10,6 +10,8 @@ export const metadata = {
   description: 'Explore the 9 villages of Sayla State — profiles, history, and family trees.',
 }
 
+export const revalidate = 60
+
 export default async function VillagesPage() {
   const payload = await getPayloadClient()
   const { docs } = await payload.find({

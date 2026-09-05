@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Meet the committee members and leadership of the Rana community.',
 }
 
+export const revalidate = 60
+
 export default async function CommitteePage() {
   const payload = await getPayloadClient()
   const { docs } = await payload.find({

@@ -10,6 +10,8 @@ export const metadata = {
   description: 'Upcoming and past events for the Rana community and its villages.',
 }
 
+export const revalidate = 60
+
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('en-IN', {
     day: 'numeric',

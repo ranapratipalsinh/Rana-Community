@@ -6,6 +6,8 @@ export const metadata = {
   description: 'Get in touch with the Rana Community Hub — address, phone, email and a contact form.',
 }
 
+export const revalidate = 60
+
 export default async function ContactPage() {
   const payload = await getPayloadClient()
   const settings = await payload.findGlobal({ slug: 'site-settings', overrideAccess: false })

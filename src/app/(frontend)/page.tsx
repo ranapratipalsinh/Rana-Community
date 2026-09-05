@@ -8,6 +8,11 @@ import { HeroSlideshow } from '@/components/site/HeroSlideshow'
 import { VillagesCarousel } from '@/components/site/VillagesCarousel'
 import type { Event, GalleryItem, Media, News as NewsItem, Village } from '@/payload-types'
 
+// Without this, the whole page (hero image, villages, everything) freezes
+// at build time — an admin uploading a new hero image or adding a village
+// wouldn't show up on the live site until the next deploy.
+export const revalidate = 60
+
 export default async function HomePage() {
   const payload = await getPayloadClient()
   const now = new Date().toISOString()

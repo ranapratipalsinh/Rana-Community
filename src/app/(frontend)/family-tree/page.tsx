@@ -10,6 +10,8 @@ export const metadata = {
   description: 'Explore the data-driven family tree and genealogy for each Sayla State village.',
 }
 
+export const revalidate = 60
+
 export default async function FamilyTreeLandingPage() {
   const payload = await getPayloadClient()
   const { docs } = await payload.find({

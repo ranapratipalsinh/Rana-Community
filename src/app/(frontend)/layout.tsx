@@ -31,6 +31,12 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const DEFAULT_DESCRIPTION =
   'Rana Community Hub — a digital home for the Rana community of Sayla State: villages, family heritage and genealogy, events, news and more.'
 
+// Header/footer content (logo, site name, contact info) comes from the CMS —
+// without this, a statically-rendered page (see the other frontend pages)
+// would keep serving whatever was true at the last deploy, so admin changes
+// wouldn't show up until the next redeploy.
+export const revalidate = 60
+
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'Rana Community Hub',

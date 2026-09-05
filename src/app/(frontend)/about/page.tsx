@@ -10,6 +10,10 @@ export const metadata = {
     'The story, history, vision and heritage of the Rana community of Sayla State.',
 }
 
+// Content here is CMS-driven — without this, edits in Website Settings
+// wouldn't show up until the next deploy.
+export const revalidate = 60
+
 type AboutKey =
   | 'historyAndBackground'
   | 'visionAndMission'

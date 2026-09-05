@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Community forms, notices, rules and reports available for download.',
 }
 
+export const revalidate = 60
+
 const CATEGORY_LABEL: Record<string, string> = {
   forms: 'Forms',
   notices: 'Notices',

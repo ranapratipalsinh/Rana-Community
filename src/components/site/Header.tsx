@@ -21,7 +21,7 @@ export function Header({ siteName, logo }: { siteName: string; logo?: MediaType 
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="border-b border-gold/20 bg-ink text-gold">
+    <header className="sticky top-0 z-50 border-b border-gold/20 bg-ink text-gold">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <Link
           href="/"

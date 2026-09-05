@@ -1,12 +1,11 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import { Play } from 'lucide-react'
 
 import type { Where } from 'payload'
 
 import { getPayloadClient } from '@/lib/payload'
 import { cn } from '@/lib/utils'
-import type { GalleryItem, Media, Village } from '@/payload-types'
+import { GalleryGrid } from '@/components/gallery/GalleryGrid'
+import type { GalleryItem, Village } from '@/payload-types'
 
 export const metadata = {
   title: 'Gallery — Rana Community Hub',
@@ -120,46 +119,7 @@ export default async function GalleryPage({
         ))}
       </div>
 
-      <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-        {items.map((item) => {
-          const img = item.image as Media | null
-          return (
-            <div
-              key={item.id}
-              className="group relative aspect-square overflow-hidden border border-gold/15"
-            >
-              {item.type === 'image' && img?.url ? (
-                <Image
-                  src={img.url}
-                  alt={img.alt || item.caption || 'Gallery photo'}
-                  fill
-                  sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
-                  className="object-cover transition-transform group-hover:scale-105"
-                />
-              ) : item.type === 'video' && item.videoUrl ? (
-                <a
-                  href={item.videoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-full w-full items-center justify-center bg-ink"
-                >
-                  <Play className="text-gold" size={32} />
-                </a>
-              ) : null}
-              {item.caption ? (
-                <p className="absolute inset-x-0 bottom-0 bg-ink/70 px-2 py-1 text-xs text-gold">
-                  {item.caption}
-                </p>
-              ) : null}
-            </div>
-          )
-        })}
-        {items.length === 0 ? (
-          <p className="col-span-full text-center text-gold/70">
-            No gallery items match this filter yet.
-          </p>
-        ) : null}
-      </div>
+      <GalleryGrid items={items} />
     </section>
   )
 }

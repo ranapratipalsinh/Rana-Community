@@ -8,6 +8,8 @@ Planning docs live one level up in `../` — [BRD/SAD](../Rana_Community_Hub_BRD
 
 Phase 0 through 4 are built: project foundation, Super Admin auth, the reusable Village template, the Family Tree / genealogy system (React Flow + dagre, search, privacy controls), the community content modules (Events, News, Gallery, Committee, Documents), and now Contact Us, global search, News/Gallery filtering, SEO (sitemap, robots.txt, Open Graph, structured data), security hardening (login lockout, secure cookies), and an audit log for admin/genealogy changes. Everything is styled with the "Legend Rajwada" dark theme (exact palette/fonts pulled from the real reference site) and responsive across desktop/tablet/mobile. See the [phase plan](../Rana_Community_Hub_Phasewise_Development_Plan.md) for the full breakdown.
 
+Phase 5 (content population) is underway: the About Us page and all 9 village profiles now carry real, web-researched content on Sayla State's history, heritage and geography (not placeholder text), and the About Us page has been redesigned with a quick-facts strip, a jump-to-section nav, and a visual ruler-succession timeline instead of a single scroll of plain text. A **Family Tree Builder** admin tool (`/admin/family-tree-builder`) was also added — it lets the Super Admin add a new relative (parent, spouse or child) directly from a person's card on the visual tree, creating the person and the relationship together in one step, instead of creating a Family Member and a separate Family Relationship record independently.
+
 ## Prerequisites
 
 - Node.js 20.9+ (developed against Node 22)
@@ -50,6 +52,7 @@ From the admin panel:
 2. **Villages** — add the 9 Sayla State villages. Each needs at least: name, slug, cover image, short description, description, and it must be **published** (not just saved as draft) to appear on the public site.
 3. **Family Members** — add people to a village. Set **Generation** (1 = founder), and note that a person only appears on the public tree once they're both **published** *and* **Display Status = Public** — this is a deliberate two-step approval gate per BRD's privacy requirements. Internal `Notes` are always admin-only regardless.
 4. **Family Relationships** — connect people with a `Parent → Child` or `Spouse` relationship. Invalid relationships (self-relations, duplicates, or anything that would create a cycle) are rejected automatically.
+   - Easier alternative to steps 3+4: use **Family Tree Builder** in the left nav (`/admin/family-tree-builder`). Pick a village, hover any person's card on the tree, and click **+ Parent / + Spouse / + Child** — type in a new person's name (or search and pick an existing person by photo) and it creates the person and the relationship together in one step.
 5. **Media** — upload images here, or directly from the upload fields on Villages/Family Members/Website Settings.
 6. **Events** — title, date/time, optional village (leave blank for community-wide), description, cover image. Publish to show it under `/events`.
 7. **News & Announcements** — set **type** to Community, Village-Specific (village becomes required), or Notice.
@@ -68,6 +71,13 @@ Contact form submissions and the audit log are both visible under `/admin` (Cont
 - `DATABASE_URL`, `PAYLOAD_SECRET` — required, see above.
 - `NEXT_PUBLIC_SITE_URL` — optional, used by the sitemap/robots.txt/Open Graph tags. Defaults to `http://localhost:3000`; set this to your real domain before Phase 5 launch.
 
+## Deploying to production (e.g. Vercel)
+
+Two things in this project only work locally as currently configured, and **must** be changed before deploying anywhere serverless (Vercel, Netlify, etc.) — otherwise the site will build and run, but uploaded images (including the logo) will 404 and the database won't connect:
+
+1. **Database** — `DATABASE_URL` currently points at a local Postgres server. A serverless host can't reach `127.0.0.1` on your machine; you need a cloud-hosted Postgres (Neon, Supabase, Vercel Postgres, Railway, etc.) and its connection string in production.
+2. **Media storage** — the `Media` collection (`src/collections/Media.ts`) uses Payload's default **local disk** storage (`upload: true`, no storage adapter), and `/media` is git-ignored. Serverless platforms have an ephemeral, per-request filesystem — nothing written to local disk persists between requests or survives a redeploy, so every uploaded image (logo, village photos, family photos, gallery, documents) would be unreachable in production. This needs a cloud storage plugin before going live — `@payloadcms/storage-vercel-blob` is the natural fit if deploying to Vercel; `@payloadcms/storage-s3` works for AWS S3 or any S3-compatible provider (e.g. Cloudflare R2) otherwise.
+
 ## What's not built yet
 
-Launch itself (Phase 5) — collecting real content, final QA, and production deployment. A few Phase 4 items are deliberately deferred rather than built speculatively: automated backups (depends on the still-open hosting decision), analytics (not yet confirmed as required), and Gujarati language support (scope not yet confirmed). The multi-role admin model, membership directory, and other roadmap items (Phase 6+) are explicitly out of scope until a future BRD/SAD revision approves them.
+Launch itself (Phase 5) — collecting real content, final QA, and production deployment (see "Deploying to production" above for the two concrete blockers). A few Phase 4 items are deliberately deferred rather than built speculatively: automated backups (depends on the still-open hosting decision), analytics (not yet confirmed as required), and Gujarati language support (scope not yet confirmed). The multi-role admin model, membership directory, and other roadmap items (Phase 6+) are explicitly out of scope until a future BRD/SAD revision approves them.

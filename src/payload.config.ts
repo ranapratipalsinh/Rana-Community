@@ -31,6 +31,16 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      afterNavLinks: ['/components/admin/FamilyTreeBuilderNavLink#FamilyTreeBuilderNavLink'],
+      views: {
+        familyTreeBuilder: {
+          Component: '/components/admin/FamilyTreeBuilderView#FamilyTreeBuilderView',
+          path: '/family-tree-builder',
+          exact: true,
+        },
+      },
+    },
   },
   collections: [
     Users,

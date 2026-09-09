@@ -86,7 +86,7 @@ export default async function VillageDetailPage({ params }: { params: Promise<Pa
         {cover?.url ? (
           <Image
             src={cover.url}
-            alt={cover.alt || village.name}
+            alt={cover.alt || village.name || 'Village'}
             fill
             sizes="100vw"
             className="object-cover"
@@ -256,7 +256,7 @@ export default async function VillageDetailPage({ params }: { params: Promise<Pa
                       >
                         <Image
                           src={img.url}
-                          alt={img.alt || item.caption || village.name}
+                          alt={img.alt || item.caption || village.name || 'Village photo'}
                           fill
                           sizes="(min-width: 768px) 12vw, 25vw"
                           className="object-cover"

@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { getPayloadClient } from '@/lib/payload'
 import { Card, CardImage, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import type { Event, Media } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 export const metadata = {
   title: 'Events — Rana Community Hub',
@@ -29,7 +31,7 @@ function EventCard({ event }: { event: Event }) {
           {cover?.url ? (
             <Image
               src={cover.url}
-              alt={cover.alt || event.title}
+              alt={cover.alt || event.title || 'Event'}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover"
@@ -49,6 +51,8 @@ function EventCard({ event }: { event: Event }) {
 }
 
 export default async function EventsPage() {
+  const locale = await getLocale()
+  const t = getTranslations(locale)
   const payload = await getPayloadClient()
   const now = new Date().toISOString()
 
@@ -86,19 +90,19 @@ export default async function EventsPage() {
             <EventCard key={event.id} event={event as Event} />
           ))}
           {upcoming.docs.length === 0 ? (
-            <p className="col-span-full text-gold/70">No upcoming events yet.</p>
+            <p className="col-span-full text-gold/70">{t.noUpcomingEvents}</p>
           ) : null}
         </div>
       </div>
 
       <div className="mt-14">
-        <h2 className="text-xl font-semibold uppercase tracking-wide text-gold">Past Events</h2>
+        <h2 className="text-xl font-semibold uppercase tracking-wide text-gold">{t.pastEvents}</h2>
         <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {past.docs.map((event) => (
             <EventCard key={event.id} event={event as Event} />
           ))}
           {past.docs.length === 0 ? (
-            <p className="col-span-full text-gold/70">No past events yet.</p>
+            <p className="col-span-full text-gold/70">{t.noPastEvents}</p>
           ) : null}
         </div>
       </div>

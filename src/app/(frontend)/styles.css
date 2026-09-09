@@ -22,9 +22,9 @@
   --color-danger: #c75050;
 
   --font-heading:
-    var(--font-cinzel), var(--font-playfair), serif;
+    Georgia, 'Times New Roman', serif;
   --font-body:
-    var(--font-inter), 'Segoe UI', sans-serif;
+    'Segoe UI', Arial, sans-serif;
 
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
@@ -55,5 +55,34 @@ h4 {
   .payload-richtext [style*='text-align:justify'],
   .payload-richtext [style*='text-align: justify'] {
     text-align: left !important;
+  }
+}
+
+/* Keep React Flow controls readable against the dark archive canvas. */
+.family-tree-canvas .react-flow__controls {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.family-tree-canvas .react-flow__controls-button {
+  width: 36px;
+  height: 36px;
+  border-bottom-color: rgba(201, 169, 110, 0.25);
+  background: #1a1816;
+  fill: #f0ede8;
+}
+
+.family-tree-canvas .react-flow__controls-button:hover {
+  background: #2a241d;
+}
+
+@media (max-width: 639px) {
+  .family-tree-canvas .react-flow__controls {
+    bottom: 12px;
+    left: 12px;
+  }
+
+  .family-tree-canvas .react-flow__controls-button {
+    width: 40px;
+    height: 40px;
   }
 }

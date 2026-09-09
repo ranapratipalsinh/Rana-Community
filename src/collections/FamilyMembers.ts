@@ -28,6 +28,7 @@ export const FamilyMembers: CollectionConfig = {
     {
       name: 'fullName',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -102,10 +103,12 @@ export const FamilyMembers: CollectionConfig = {
     {
       name: 'shortBiography',
       type: 'textarea',
+      localized: true,
     },
     {
       name: 'notes',
       type: 'textarea',
+      localized: true,
       access: {
         // Internal admin-only notes — never exposed to the public API, regardless of displayStatus.
         read: authenticatedField,

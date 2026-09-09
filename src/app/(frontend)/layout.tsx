@@ -1,31 +1,12 @@
 import React from 'react'
-import { Cinzel, Playfair_Display, Inter } from 'next/font/google'
 
 import { getPayloadClient } from '@/lib/payload'
 import { Header } from '@/components/site/Header'
 import { Footer } from '@/components/site/Footer'
 import type { Media } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 import './styles.css'
-
-const cinzel = Cinzel({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-cinzel',
-  display: 'swap',
-})
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  style: ['normal', 'italic'],
-  variable: '--font-playfair',
-  display: 'swap',
-})
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['200', '300', '400', '500'],
-  variable: '--font-inter',
-  display: 'swap',
-})
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const DEFAULT_DESCRIPTION =
@@ -55,6 +36,8 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale()
+  const translations = getTranslations(locale)
   const payload = await getPayloadClient()
   const settings = await payload.findGlobal({ slug: 'site-settings', overrideAccess: false })
 
@@ -62,11 +45,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const logo = (settings.logo as Media | null) ?? null
 
   return (
-    <html lang="en" className={`${cinzel.variable} ${playfair.variable} ${inter.variable}`}>
+    <html lang={locale}>
       <body className="flex min-h-screen flex-col" suppressHydrationWarning>
-        <Header siteName={siteName} logo={logo} />
+        <Header siteName={siteName} logo={logo} locale={locale} translations={translations} />
         <main className="flex-1">{children}</main>
-        <Footer siteName={siteName} contact={settings.contact} social={settings.social} />
+        <Footer
+          siteName={siteName}
+          contact={settings.contact}
+          social={settings.social}
+          translations={translations}
+        />
       </body>
     </html>
   )

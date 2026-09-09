@@ -1,5 +1,19 @@
 import Link from 'next/link'
 
+type FooterTranslations = {
+  home: string
+  about: string
+  villages: string
+  familyTree: string
+  events: string
+  gallery: string
+  committee: string
+  navigate: string
+  community: string
+  contact: string
+  allRightsReserved: string
+}
+
 type ContactInfo = {
   address?: string | null
   phone?: string | null
@@ -15,10 +29,12 @@ export function Footer({
   siteName,
   contact,
   social,
+  translations,
 }: {
   siteName: string
   contact?: ContactInfo
   social?: SocialLink[] | null
+  translations: FooterTranslations
 }) {
   return (
     <footer className="border-t border-gold/20 bg-ink text-gold">
@@ -32,52 +48,52 @@ export function Footer({
           </p>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">Navigate</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">{translations.navigate}</p>
           <ul className="mt-3 space-y-2 text-sm text-gold/70">
             <li>
               <Link href="/" className="transition-colors hover:text-gold">
-                Home
+                {translations.home}
               </Link>
             </li>
             <li>
               <Link href="/about" className="transition-colors hover:text-gold">
-                About Us
+                {translations.about}
               </Link>
             </li>
             <li>
               <Link href="/villages" className="transition-colors hover:text-gold">
-                Our Villages
+                {translations.villages}
               </Link>
             </li>
             <li>
               <Link href="/family-tree" className="transition-colors hover:text-gold">
-                Family Tree
+                {translations.familyTree}
               </Link>
             </li>
           </ul>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">Community</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">{translations.community}</p>
           <ul className="mt-3 space-y-2 text-sm text-gold/70">
             <li>
               <Link href="/events" className="transition-colors hover:text-gold">
-                Events
+                {translations.events}
               </Link>
             </li>
             <li>
               <Link href="/gallery" className="transition-colors hover:text-gold">
-                Gallery
+                {translations.gallery}
               </Link>
             </li>
             <li>
               <Link href="/committee" className="transition-colors hover:text-gold">
-                Committee
+                {translations.committee}
               </Link>
             </li>
           </ul>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">Contact</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">{translations.contact}</p>
           <ul className="mt-3 space-y-2 text-sm text-gold/70">
             {contact?.address ? <li>{contact.address}</li> : null}
             {contact?.phone ? <li>{contact.phone}</li> : null}

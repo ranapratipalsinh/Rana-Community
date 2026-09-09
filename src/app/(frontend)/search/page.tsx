@@ -3,6 +3,8 @@ import { Search as SearchIcon } from 'lucide-react'
 
 import { getPayloadClient } from '@/lib/payload'
 import type { Event, FamilyMember, News as NewsItem, Village } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 export const metadata = {
   title: 'Search — Rana Community Hub',
@@ -13,6 +15,8 @@ export default async function SearchPage({
 }: {
   searchParams: Promise<{ q?: string }>
 }) {
+  const locale = await getLocale()
+  const t = getTranslations(locale)
   const { q = '' } = await searchParams
   const query = q.trim()
 
@@ -107,7 +111,7 @@ export default async function SearchPage({
 
           {people.length > 0 ? (
             <div>
-              <h2 className="text-lg font-semibold uppercase tracking-wide text-gold">People</h2>
+              <h2 className="text-lg font-semibold uppercase tracking-wide text-gold">{t.people}</h2>
               <ul className="mt-2 space-y-1">
                 {people.map((p) => {
                   const village = p.village as Village | number

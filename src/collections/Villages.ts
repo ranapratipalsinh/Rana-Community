@@ -29,6 +29,7 @@ export const Villages: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      localized: true,
       required: true,
       unique: true,
     },
@@ -60,6 +61,7 @@ export const Villages: CollectionConfig = {
     {
       name: 'shortDescription',
       type: 'textarea',
+      localized: true,
       required: true,
       admin: {
         description: 'Short summary shown on the village listing card.',
@@ -68,11 +70,13 @@ export const Villages: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+      localized: true,
       required: true,
     },
     {
       name: 'history',
       type: 'richText',
+      localized: true,
     },
     {
       name: 'location',
@@ -81,6 +85,7 @@ export const Villages: CollectionConfig = {
         {
           name: 'address',
           type: 'text',
+          localized: true,
         },
         {
           name: 'mapEmbedUrl',
@@ -102,17 +107,20 @@ export const Villages: CollectionConfig = {
         {
           name: 'name',
           type: 'text',
+          localized: true,
           required: true,
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
         },
       ],
     },
     {
       name: 'populationInfo',
       type: 'textarea',
+      localized: true,
       admin: {
         description: 'Population / basic information, where available.',
       },
@@ -132,6 +140,7 @@ export const Villages: CollectionConfig = {
         {
           name: 'address',
           type: 'text',
+          localized: true,
         },
       ],
     },
@@ -143,10 +152,12 @@ export const Villages: CollectionConfig = {
         {
           name: 'title',
           type: 'text',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
         },
       ],
     },

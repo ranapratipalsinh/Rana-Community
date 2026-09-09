@@ -3,22 +3,32 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, Search, X } from 'lucide-react'
+import { Languages, Menu, Search, X } from 'lucide-react'
 
 import type { Media as MediaType } from '@/payload-types'
+import { LOCALE_LABELS, LOCALES, type Locale } from '@/lib/i18n'
 
-const NAV_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
-  { href: '/villages', label: 'Our Villages' },
-  { href: '/family-tree', label: 'Family Tree' },
-  { href: '/events', label: 'Events' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/committee', label: 'Committee' },
-]
+type HeaderTranslations = {
+  home: string; about: string; villages: string; familyTree: string; events: string;
+  gallery: string; committee: string; search: string; selectLanguage: string
+}
 
-export function Header({ siteName, logo }: { siteName: string; logo?: MediaType | null }) {
+export function Header({ siteName, logo, locale, translations }: {
+  siteName: string; logo?: MediaType | null; locale: Locale; translations: HeaderTranslations
+}) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const navLinks = [
+    { href: '/', label: translations.home }, { href: '/about', label: translations.about },
+    { href: '/villages', label: translations.villages }, { href: '/family-tree', label: translations.familyTree },
+    { href: '/events', label: translations.events }, { href: '/gallery', label: translations.gallery },
+    { href: '/committee', label: translations.committee },
+  ]
+
+  function changeLocale(nextLocale: string) {
+    if (!LOCALES.includes(nextLocale as Locale)) return
+    document.cookie = `rana-locale=${nextLocale}; path=/; max-age=31536000; samesite=lax`
+    window.location.reload()
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-gold/20 bg-ink text-gold">
@@ -46,7 +56,7 @@ export function Header({ siteName, logo }: { siteName: string; logo?: MediaType 
 
         <div className="flex items-center gap-6">
           <nav className="hidden flex-wrap items-center justify-end gap-x-6 gap-y-1 lg:flex">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -57,9 +67,20 @@ export function Header({ siteName, logo }: { siteName: string; logo?: MediaType 
             ))}
           </nav>
 
-          <Link href="/search" aria-label="Search" className="text-gold hover:text-gold-light">
+          <Link href="/search" aria-label={translations.search} className="text-gold hover:text-gold-light">
             <Search size={20} />
           </Link>
+
+          <label className="flex items-center gap-2 text-gold" title={translations.selectLanguage}>
+            <Languages size={18} aria-hidden="true" />
+            <select value={locale} onChange={(event) => changeLocale(event.target.value)}
+              aria-label={translations.selectLanguage}
+              className="bg-transparent text-xs font-medium uppercase tracking-[0.08em] outline-none">
+              {LOCALES.map((code) => <option key={code} value={code} className="bg-ink text-gold">
+                {LOCALE_LABELS[code]}
+              </option>)}
+            </select>
+          </label>
 
           <button
             className="text-gold lg:hidden"
@@ -74,7 +95,7 @@ export function Header({ siteName, logo }: { siteName: string; logo?: MediaType 
 
       {menuOpen ? (
         <nav className="flex flex-col gap-1 border-t border-gold/20 px-4 pb-4 lg:hidden">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}

@@ -2,6 +2,8 @@ import { FileText } from 'lucide-react'
 
 import { getPayloadClient } from '@/lib/payload'
 import type { Document as DocType } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 export const metadata = {
   title: 'Documents — Rana Community Hub',
@@ -27,6 +29,8 @@ function formatSize(bytes?: number | null) {
 }
 
 export default async function DocumentsPage() {
+  const locale = await getLocale()
+  const t = getTranslations(locale)
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'documents',
@@ -47,7 +51,7 @@ export default async function DocumentsPage() {
         Documents
       </h1>
       <p className="mx-auto mt-3 max-w-2xl text-center text-gold/70">
-        Community forms, notices, rules and reports.
+        {t.documentsIntro}
       </p>
 
       <div className="mt-10 space-y-10">
@@ -85,8 +89,7 @@ export default async function DocumentsPage() {
         ))}
         {documents.length === 0 ? (
           <p className="text-center text-gold/70">
-            No documents published yet. The Super Admin can upload forms, notices, rules and
-            reports from the admin panel.
+            {t.documentsPending}
           </p>
         ) : null}
       </div>

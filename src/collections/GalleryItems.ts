@@ -46,6 +46,7 @@ export const GalleryItems: CollectionConfig = {
     {
       name: 'videoUrl',
       type: 'text',
+      localized: true,
       label: 'Video URL',
       admin: {
         condition: (data) => data?.type === 'video',
@@ -59,6 +60,7 @@ export const GalleryItems: CollectionConfig = {
     {
       name: 'caption',
       type: 'text',
+      localized: true,
     },
     {
       name: 'category',

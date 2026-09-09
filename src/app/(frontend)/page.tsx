@@ -7,6 +7,8 @@ import { buttonVariants } from '@/components/ui/button'
 import { HeroSlideshow } from '@/components/site/HeroSlideshow'
 import { VillagesCarousel } from '@/components/site/VillagesCarousel'
 import type { Event, GalleryItem, Media, News as NewsItem, Village } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 // Without this, the whole page (hero image, villages, everything) freezes
 // at build time — an admin uploading a new hero image or adding a village
@@ -14,6 +16,8 @@ import type { Event, GalleryItem, Media, News as NewsItem, Village } from '@/pay
 export const revalidate = 60
 
 export default async function HomePage() {
+  const locale = await getLocale()
+  const t = getTranslations(locale)
   const payload = await getPayloadClient()
   const now = new Date().toISOString()
 
@@ -59,6 +63,12 @@ export default async function HomePage() {
   const heroImages = (settings.home?.heroImages ?? [])
     .map((item) => item.image as Media | null)
     .filter((img): img is Media => Boolean(img?.url))
+  const heroImagesMobileRaw = (settings.home?.heroImagesMobile ?? [])
+    .map((item) => item.image as Media | null)
+    .filter((img): img is Media => Boolean(img?.url))
+  // Fall back to the desktop images if no mobile-specific ones are set, so
+  // nothing breaks for sites that haven't uploaded a mobile version yet.
+  const heroImagesMobile = heroImagesMobileRaw.length > 0 ? heroImagesMobileRaw : heroImages
   const heroVideo = settings.home?.heroVideo as Media | null
 
   return (
@@ -77,9 +87,25 @@ export default async function HomePage() {
             <source src={heroVideo.url} type={heroVideo.mimeType || 'video/mp4'} />
           </video>
         ) : heroImages.length > 0 ? (
-          <HeroSlideshow
-            images={heroImages.map((img) => ({ url: img.url as string, alt: img.alt || '' }))}
-          />
+          <>
+            {/* A single wide desktop photo crops badly on a narrow phone
+                screen, so mobile gets its own image (or the same one, if no
+                mobile-specific version has been uploaded) via CSS visibility
+                rather than a JS viewport check. */}
+            <div className="block h-full w-full sm:hidden">
+              <HeroSlideshow
+                images={heroImagesMobile.map((img) => ({
+                  url: img.url as string,
+                  alt: img.alt || '',
+                }))}
+              />
+            </div>
+            <div className="hidden h-full w-full sm:block">
+              <HeroSlideshow
+                images={heroImages.map((img) => ({ url: img.url as string, alt: img.alt || '' }))}
+              />
+            </div>
+          </>
         ) : (
           <div className="absolute inset-0 bg-ink" />
         )}
@@ -94,12 +120,14 @@ export default async function HomePage() {
                 {settings.tagline}
               </p>
             ) : null}
-            <h1
-              className="font-heading text-4xl font-normal tracking-wide text-gold md:text-5xl lg:text-6xl"
-              style={{ textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}
-            >
-              {settings.home?.heroHeading || settings.siteName}
-            </h1>
+            {settings.home?.heroHeading ? (
+              <h1
+                className="font-heading text-4xl font-normal tracking-wide text-gold md:text-5xl lg:text-6xl"
+                style={{ textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}
+              >
+                {settings.home.heroHeading}
+              </h1>
+            ) : null}
             {settings.home?.heroSubheading ? (
               <p className="mt-4 max-w-md text-base tracking-wide text-gold/70 md:text-lg">
                 {settings.home.heroSubheading}
@@ -107,10 +135,10 @@ export default async function HomePage() {
             ) : null}
             <div className="mt-8 flex flex-wrap gap-4">
               <Link href="/villages" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-                Explore Our Villages
+                {t.exploreVillages}
               </Link>
               <Link href="/about" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
-                About Us
+                {t.about}
               </Link>
             </div>
           </div>
@@ -149,10 +177,10 @@ export default async function HomePage() {
             ) : null}
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                Our Heritage
+                {t.ourHeritage}
               </p>
               <h2 className="mt-2 font-heading text-2xl font-bold uppercase tracking-[0.1em] text-gold md:text-3xl">
-                {settings.home.history.heading || 'Our History'}
+                {settings.home.history.heading || t.ourHistory}
               </h2>
               <RichText data={settings.home.history.content} className="mt-4" />
             </div>
@@ -163,18 +191,17 @@ export default async function HomePage() {
       {/* Villages carousel */}
       <section className="mx-auto max-w-6xl px-4 py-14">
         <h2 className="text-center font-heading text-2xl font-bold uppercase tracking-[0.15em] text-gold md:text-3xl">
-          Villages of Sayla State
+          {t.villagesOfSayla}
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-gold/70">
-          Nine villages, one shared heritage. Explore each village&apos;s story, people and family
-          tree.
+          {t.sharedHeritage}
         </p>
         <div className="mt-10">
           {villages.length > 0 ? (
             <VillagesCarousel villages={villages} />
           ) : (
             <p className="text-center text-gold/70">
-              Villages will appear here once the Super Admin adds them from the admin panel.
+              {t.noVillages}
             </p>
           )}
         </div>
@@ -188,7 +215,7 @@ export default async function HomePage() {
               <div>
                 <div className="flex items-center justify-between">
                   <h2 className="font-heading text-xl font-bold uppercase tracking-wide text-gold">
-                    Upcoming Events
+                    {t.upcomingEvents}
                   </h2>
                   <Link
                     href="/events"
@@ -223,7 +250,7 @@ export default async function HomePage() {
               <div>
                 <div className="flex items-center justify-between">
                   <h2 className="font-heading text-xl font-bold uppercase tracking-wide text-gold">
-                    Latest News
+                    {t.latestNews}
                   </h2>
                   <Link
                     href="/news"
@@ -263,7 +290,7 @@ export default async function HomePage() {
           <div className="mx-auto max-w-6xl">
             <div className="flex items-center justify-between">
               <h2 className="font-heading text-xl font-bold uppercase tracking-wide text-gold">
-                Gallery Highlights
+                {t.galleryHighlights}
               </h2>
               <Link
                 href="/gallery"

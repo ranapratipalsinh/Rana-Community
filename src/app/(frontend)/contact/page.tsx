@@ -1,5 +1,7 @@
 import { getPayloadClient } from '@/lib/payload'
 import { ContactForm } from '@/components/contact/ContactForm'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 export const metadata = {
   title: 'Contact Us — Rana Community Hub',
@@ -9,6 +11,8 @@ export const metadata = {
 export const revalidate = 60
 
 export default async function ContactPage() {
+  const locale = await getLocale()
+  const t = getTranslations(locale)
   const payload = await getPayloadClient()
   const settings = await payload.findGlobal({ slug: 'site-settings', overrideAccess: false })
   const contact = settings.contact
@@ -26,7 +30,7 @@ export default async function ContactPage() {
             {contact?.address ? (
               <div>
                 <h2 className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">
-                  Address
+                  {t.address}
                 </h2>
                 <p className="mt-1 whitespace-pre-line text-gold/70">{contact.address}</p>
               </div>
@@ -34,7 +38,7 @@ export default async function ContactPage() {
             {contact?.phone ? (
               <div>
                 <h2 className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">
-                  Phone
+                  {t.phone}
                 </h2>
                 <p className="mt-1 text-gold/70">{contact.phone}</p>
               </div>
@@ -42,7 +46,7 @@ export default async function ContactPage() {
             {contact?.email ? (
               <div>
                 <h2 className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">
-                  Email
+                  {t.email}
                 </h2>
                 <p className="mt-1 text-gold/70">{contact.email}</p>
               </div>

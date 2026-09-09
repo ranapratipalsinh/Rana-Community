@@ -106,14 +106,14 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'hi' | 'gu') | ('en' | 'hi' | 'gu')[];
   globals: {
     'site-settings': SiteSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: null;
+  locale: 'en' | 'hi' | 'gu';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -936,9 +936,18 @@ export interface SiteSetting {
     heroHeading?: string | null;
     heroSubheading?: string | null;
     /**
-     * Full-bleed hero background. One image is shown static; two or more auto-rotate as a slideshow. Ignored if a Hero Video is set.
+     * Full-bleed hero background for desktop/tablet. One image is shown static; two or more auto-rotate as a slideshow. Ignored if a Hero Video is set.
      */
     heroImages?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Optional — a separate hero background for phone screens. A single wide desktop photo usually crops badly on a narrow screen, so upload a portrait/square-friendly version of the same scene here. Leave empty to reuse the desktop Hero Images above on mobile too. Ignored if a Hero Video is set.
+     */
+    heroImagesMobile?:
       | {
           image: number | Media;
           id?: string | null;
@@ -1108,6 +1117,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         heroHeading?: T;
         heroSubheading?: T;
         heroImages?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+        heroImagesMobile?:
           | T
           | {
               image?: T;

@@ -13,6 +13,10 @@ export type AdminPersonNodeData = PersonNodeData & {
 export function AdminPersonNode({ data, selected }: NodeProps<Node<AdminPersonNodeData>>) {
   const { member, onAddRelative } = data
   const photo = member.profilePhoto as Media | null
+  const memberName =
+    typeof member.fullName === 'string' && member.fullName.trim()
+      ? member.fullName
+      : 'Family member'
 
   const years = (() => {
     if (member.birthYear && member.deathYear) return `${member.birthYear} – ${member.deathYear}`
@@ -40,19 +44,19 @@ export function AdminPersonNode({ data, selected }: NodeProps<Node<AdminPersonNo
         {photo?.url ? (
           <Image
             src={photo.url}
-            alt={photo.alt || member.fullName}
+            alt={photo.alt || memberName}
             width={48}
             height={48}
             className="h-full w-full object-cover"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xs text-charcoal/40">
-            {member.fullName.charAt(0)}
+            {memberName.charAt(0)}
           </div>
         )}
       </div>
 
-      <p className="mt-1 truncate text-sm font-semibold text-ink">{member.fullName}</p>
+      <p className="mt-1 truncate text-sm font-semibold text-ink">{memberName}</p>
       {years ? <p className="text-xs text-charcoal/60">{years}</p> : null}
 
       <div className="mt-2 flex items-center justify-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">

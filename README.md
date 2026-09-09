@@ -71,6 +71,14 @@ Contact form submissions and the audit log are both visible under `/admin` (Cont
 - `DATABASE_URL`, `PAYLOAD_SECRET` — required, see above.
 - `NEXT_PUBLIC_SITE_URL` — optional, used by the sitemap/robots.txt/Open Graph tags. Defaults to `http://localhost:3000`; set this to your real domain before Phase 5 launch.
 
+## Multilingual content
+
+The public site supports English (`en`), Hindi (`hi`), and Gujarati (`gu`). Use the language selector in the header to change the active language; the choice is remembered in the browser.
+
+In Payload Admin, localized fields show a locale selector. For every translated field, select English, Hindi, and Gujarati and enter the approved value for each language. This applies to Website Settings/Home Page, About Us, village names and descriptions, family member names and biographies, events, news, gallery captions, committee content, document titles/descriptions, and media alt text. Shared values such as photos, dates, relationships, map URLs, phone numbers, email addresses, ordering, and publication/privacy status are entered once.
+
+English is the fallback language. If a Hindi or Gujarati translation is empty, the public site shows the English value until that translation is added and approved.
+
 ## Deploying to production (e.g. Vercel)
 
 Three things need to be set up before this deploys correctly on a serverless host (Vercel, Netlify, etc.) — without them the build itself fails, or it succeeds but the site is broken at runtime:

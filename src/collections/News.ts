@@ -26,6 +26,7 @@ export const News: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     slugField(),
@@ -66,6 +67,7 @@ export const News: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+      localized: true,
       required: true,
     },
     {

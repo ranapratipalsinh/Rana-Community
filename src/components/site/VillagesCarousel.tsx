@@ -12,6 +12,8 @@ export function VillagesCarousel({ villages }: { villages: Village[] }) {
     <InfiniteSlider gap={24} speed={40} speedOnHover={12} className="py-2">
       {villages.map((village) => {
         const cover = village.coverImage as Media | null
+        const villageName =
+          typeof village.name === 'string' && village.name.trim() ? village.name : 'Village'
         return (
           <Link key={village.id} href={`/villages/${village.slug}`} className="w-[280px] sm:w-[340px]">
             <Card>
@@ -19,7 +21,7 @@ export function VillagesCarousel({ villages }: { villages: Village[] }) {
                 {cover?.url ? (
                   <Image
                     src={cover.url}
-                    alt={cover.alt || village.name}
+                    alt={cover.alt || villageName}
                     fill
                     sizes="(min-width: 640px) 340px, 280px"
                     className="object-cover"
@@ -27,7 +29,7 @@ export function VillagesCarousel({ villages }: { villages: Village[] }) {
                 ) : null}
               </CardImage>
               <CardContent>
-                <CardTitle>{village.name}</CardTitle>
+                <CardTitle>{villageName}</CardTitle>
                 <CardDescription>{village.shortDescription}</CardDescription>
               </CardContent>
             </Card>

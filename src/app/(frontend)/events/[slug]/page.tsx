@@ -70,7 +70,7 @@ export default async function EventDetailPage({ params }: { params: Promise<Para
         <div className="relative aspect-video w-full overflow-hidden border border-gold/30">
           <Image
             src={cover.url}
-            alt={cover.alt || event.title}
+            alt={cover.alt || event.title || 'Event'}
             fill
             sizes="(min-width: 768px) 736px, 100vw"
             className="object-cover"
@@ -108,7 +108,7 @@ export default async function EventDetailPage({ params }: { params: Promise<Para
               <div key={i} className="relative aspect-square overflow-hidden border border-gold/15">
                 <Image
                   src={img.url}
-                  alt={img.alt || event.title}
+                  alt={img.alt || event.title || 'Event photo'}
                   fill
                   sizes="(min-width: 640px) 240px, 50vw"
                   className="object-cover"

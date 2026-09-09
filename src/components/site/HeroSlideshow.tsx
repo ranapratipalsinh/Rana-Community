@@ -20,7 +20,7 @@ export function HeroSlideshow({ images }: { images: { url: string; alt: string }
         <Image
           key={img.url}
           src={img.url}
-          alt={img.alt}
+          alt={img.alt || `Hero image ${i + 1}`}
           fill
           sizes="100vw"
           priority={i === 0}

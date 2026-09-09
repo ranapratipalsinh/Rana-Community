@@ -14,7 +14,16 @@ export const slugField = (sourceField = 'title'): Field => ({
     beforeValidate: [
       ({ value, data }) => {
         if (value) return value
-        const source = data?.[sourceField] as string | undefined
+        const sourceValue = data?.[sourceField]
+        const source =
+          typeof sourceValue === 'string'
+            ? sourceValue
+            : sourceValue && typeof sourceValue === 'object'
+              ? ((sourceValue as Record<string, unknown>).en as string | undefined) ||
+                Object.values(sourceValue as Record<string, unknown>).find(
+                  (value): value is string => typeof value === 'string',
+                )
+              : undefined
         return source
           ? source
               .toLowerCase()

@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { getPayloadClient } from '@/lib/payload'
 import { Card, CardImage, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import type { Media, Village } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 export const metadata = {
   title: 'Our Villages — Sayla State — Rana Community Hub',
@@ -13,6 +15,8 @@ export const metadata = {
 export const revalidate = 60
 
 export default async function VillagesPage() {
+  const locale = await getLocale()
+  const t = getTranslations(locale)
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'villages',
@@ -29,12 +33,14 @@ export default async function VillagesPage() {
         Our Villages — Sayla State
       </h1>
       <p className="mx-auto mt-3 max-w-2xl text-center text-gold/70">
-        Nine villages, each with its own profile, history and family tree.
+        {t.nineVillageSummary}
       </p>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {villages.map((village) => {
           const cover = village.coverImage as Media | null
+          const villageName =
+            typeof village.name === 'string' && village.name.trim() ? village.name : 'Village'
           return (
             <Link key={village.id} href={`/villages/${village.slug}`}>
               <Card>
@@ -42,7 +48,7 @@ export default async function VillagesPage() {
                   {cover?.url ? (
                     <Image
                       src={cover.url}
-                      alt={cover.alt || village.name}
+                      alt={cover.alt || villageName}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover"
@@ -50,7 +56,7 @@ export default async function VillagesPage() {
                   ) : null}
                 </CardImage>
                 <CardContent>
-                  <CardTitle>{village.name}</CardTitle>
+                  <CardTitle>{villageName}</CardTitle>
                   <CardDescription>{village.shortDescription}</CardDescription>
                 </CardContent>
               </Card>
@@ -59,8 +65,7 @@ export default async function VillagesPage() {
         })}
         {villages.length === 0 ? (
           <p className="col-span-full text-center text-gold/70">
-            No villages published yet. The Super Admin can add all 9 Sayla State villages from the
-            admin panel.
+            {t.noVillagesPublished}
           </p>
         ) : null}
       </div>

@@ -43,7 +43,7 @@ export default async function FamilyTreeLandingPage() {
                   {cover?.url ? (
                     <Image
                       src={cover.url}
-                      alt={cover.alt || village.name}
+                      alt={cover.alt || village.name || 'Village'}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover"

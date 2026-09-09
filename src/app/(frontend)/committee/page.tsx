@@ -2,6 +2,8 @@ import Image from 'next/image'
 
 import { getPayloadClient } from '@/lib/payload'
 import type { CommitteeMember, Media } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 export const metadata = {
   title: 'Committee / Leadership — Rana Community Hub',
@@ -11,6 +13,8 @@ export const metadata = {
 export const revalidate = 60
 
 export default async function CommitteePage() {
+  const locale = await getLocale()
+  const t = getTranslations(locale)
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'committee-members',
@@ -27,12 +31,16 @@ export default async function CommitteePage() {
         Committee &amp; Leadership
       </h1>
       <p className="mx-auto mt-3 max-w-2xl text-center text-gold/70">
-        The people who guide the Rana community forward.
+        {t.committeeIntro}
       </p>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {members.map((member) => {
           const photo = member.photo as Media | null
+          const memberName =
+            typeof member.name === 'string' && member.name.trim()
+              ? member.name
+              : 'Committee Member'
           return (
             <div
               key={member.id}
@@ -42,18 +50,18 @@ export default async function CommitteePage() {
                 {photo?.url ? (
                   <Image
                     src={photo.url}
-                    alt={photo.alt || member.name}
+                    alt={photo.alt || memberName}
                     width={96}
                     height={96}
                     className="h-full w-full object-cover"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-ink-soft text-2xl text-gold/70">
-                    {member.name.charAt(0)}
+                    {memberName.charAt(0)}
                   </div>
                 )}
               </div>
-              <p className="mt-4 text-lg font-semibold text-gold">{member.name}</p>
+              <p className="mt-4 text-lg font-semibold text-gold">{memberName}</p>
               <p className="text-sm font-medium uppercase tracking-wide text-gold">
                 {member.position}
               </p>
@@ -71,7 +79,7 @@ export default async function CommitteePage() {
         })}
         {members.length === 0 ? (
           <p className="col-span-full text-center text-gold/70">
-            Committee members will appear here once added by the Super Admin.
+            {t.committeePending}
           </p>
         ) : null}
       </div>

@@ -25,6 +25,7 @@ export const Events: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     slugField(),
@@ -51,10 +52,12 @@ export const Events: CollectionConfig = {
     {
       name: 'location',
       type: 'text',
+      localized: true,
     },
     {
       name: 'description',
       type: 'richText',
+      localized: true,
       required: true,
     },
     {
@@ -80,7 +83,7 @@ export const Events: CollectionConfig = {
       type: 'group',
       label: 'Registration / Contact (optional)',
       fields: [
-        { name: 'contactName', type: 'text' },
+        { name: 'contactName', type: 'text', localized: true },
         { name: 'contactPhone', type: 'text' },
         { name: 'contactEmail', type: 'text' },
         { name: 'registrationUrl', type: 'text' },

@@ -24,11 +24,13 @@ export const CommitteeMembers: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
       name: 'position',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -39,6 +41,7 @@ export const CommitteeMembers: CollectionConfig = {
     {
       name: 'shortDescription',
       type: 'textarea',
+      localized: true,
     },
     {
       name: 'contactInfo',

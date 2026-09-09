@@ -6,19 +6,13 @@ import { getPayloadClient } from '@/lib/payload'
 import { cn } from '@/lib/utils'
 import { GalleryGrid } from '@/components/gallery/GalleryGrid'
 import type { GalleryItem, Village } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
 
 export const metadata = {
   title: 'Gallery — Rana Community Hub',
   description: 'Photos and videos from villages, events, community life and heritage.',
 }
-
-const CATEGORIES = [
-  { value: '', label: 'All' },
-  { value: 'events', label: 'Events' },
-  { value: 'villages', label: 'Villages' },
-  { value: 'community', label: 'Community' },
-  { value: 'heritage', label: 'Heritage' },
-]
 
 function buildHref(category: string, village: string) {
   const params = new URLSearchParams()
@@ -34,6 +28,13 @@ export default async function GalleryPage({
   searchParams: Promise<{ category?: string; village?: string }>
 }) {
   const { category = '', village: villageSlug = '' } = await searchParams
+  const locale = await getLocale()
+  const t = getTranslations(locale)
+  const categories = [
+    { value: '', label: t.filterAll }, { value: 'events', label: t.events },
+    { value: 'villages', label: t.villages }, { value: 'community', label: t.community },
+    { value: 'heritage', label: t.ourHeritage },
+  ]
   const payload = await getPayloadClient()
 
   let villageId: number | undefined
@@ -75,7 +76,7 @@ export default async function GalleryPage({
       </h1>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-        {CATEGORIES.map((c) => (
+        {categories.map((c) => (
           <Link
             key={c.value}
             href={buildHref(c.value, villageSlug)}
@@ -101,7 +102,7 @@ export default async function GalleryPage({
               : 'border-gold/15 text-gold/70 hover:border-bronze',
           )}
         >
-          All Villages
+          {t.villages}
         </Link>
         {(villages as Village[]).map((v) => (
           <Link

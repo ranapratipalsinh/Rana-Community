@@ -5,24 +5,15 @@ import { getPayloadClient } from '@/lib/payload'
 import { Card, CardImage, CardContent, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import type { Media, News as NewsItem } from '@/payload-types'
+import { getTranslations } from '@/lib/i18n'
+import { getLocale } from '@/lib/i18n-server'
+
+const TYPE_LABEL: Record<string, string> = { community: 'Community', village: 'Village', notice: 'Notice' }
 
 export const metadata = {
   title: 'News & Announcements — Rana Community Hub',
   description: 'Community announcements, village-specific news and important notices.',
 }
-
-const TYPE_LABEL: Record<string, string> = {
-  community: 'Community',
-  village: 'Village',
-  notice: 'Notice',
-}
-
-const TYPE_FILTERS = [
-  { value: '', label: 'All' },
-  { value: 'community', label: 'Community' },
-  { value: 'village', label: 'Village' },
-  { value: 'notice', label: 'Notice' },
-]
 
 export default async function NewsPage({
   searchParams,
@@ -30,6 +21,12 @@ export default async function NewsPage({
   searchParams: Promise<{ type?: string }>
 }) {
   const { type = '' } = await searchParams
+  const locale = await getLocale()
+  const t = getTranslations(locale)
+  const typeFilters = [
+    { value: '', label: t.filterAll }, { value: 'community', label: t.communityAnnouncements },
+    { value: 'village', label: t.villageSpecific }, { value: 'notice', label: t.importantNotice },
+  ]
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'news',
@@ -48,7 +45,7 @@ export default async function NewsPage({
       </h1>
 
       <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-        {TYPE_FILTERS.map((f) => (
+        {typeFilters.map((f) => (
           <Link
             key={f.value}
             href={f.value ? `/news?type=${f.value}` : '/news'}
@@ -74,7 +71,7 @@ export default async function NewsPage({
                   {image?.url ? (
                     <Image
                       src={image.url}
-                      alt={image.alt || item.title}
+                      alt={image.alt || item.title || 'News image'}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover"
@@ -98,7 +95,7 @@ export default async function NewsPage({
         })}
         {news.length === 0 ? (
           <p className="col-span-full text-center text-gold/70">
-            No announcements published yet.
+            {t.noNews}
           </p>
         ) : null}
       </div>

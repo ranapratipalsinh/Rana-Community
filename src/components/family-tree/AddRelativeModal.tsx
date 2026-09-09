@@ -185,6 +185,8 @@ export function AddRelativeModal({
             <ul className="max-h-64 space-y-1 overflow-y-auto">
               {candidates.map((m) => {
                 const photo = m.profilePhoto as Media | null
+                const memberName =
+                  typeof m.fullName === 'string' && m.fullName.trim() ? m.fullName : 'Family member'
                 return (
                   <li key={m.id}>
                     <button
@@ -207,11 +209,11 @@ export function AddRelativeModal({
                           />
                         ) : (
                           <span className="flex h-full w-full items-center justify-center text-[10px] text-gold/50">
-                            {m.fullName.charAt(0)}
+                            {memberName.charAt(0)}
                           </span>
                         )}
                       </span>
-                      <span className="truncate">{m.fullName}</span>
+                      <span className="truncate">{memberName}</span>
                     </button>
                   </li>
                 )

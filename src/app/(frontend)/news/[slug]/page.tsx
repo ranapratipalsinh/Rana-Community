@@ -60,7 +60,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
         <div className="relative aspect-video w-full overflow-hidden border border-gold/30">
           <Image
             src={image.url}
-            alt={image.alt || item.title}
+            alt={image.alt || item.title || 'News image'}
             fill
             sizes="(min-width: 768px) 736px, 100vw"
             className="object-cover"

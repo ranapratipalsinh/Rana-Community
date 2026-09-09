@@ -99,29 +99,37 @@ export default async function AboutPage() {
             <section
               key={key}
               id={key}
-              className={`relative scroll-mt-32 border-b border-gold/10 px-4 py-16 ${
+              className={`relative scroll-mt-32 border-b border-gold/10 px-4 py-20 ${
                 i % 2 === 1 ? 'bg-ink-soft' : ''
               }`}
             >
-              <div className="mx-auto max-w-3xl">
-                <div className="flex items-start gap-5 sm:gap-8">
+              <div className="mx-auto max-w-5xl lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
+                {/* Label column — stays put while a long section scrolls by, so
+                    the reader always knows which chapter they're in */}
+                <div className="lg:sticky lg:top-32 lg:self-start">
                   <span
-                    className="hidden shrink-0 font-heading text-6xl font-bold leading-none text-gold/10 sm:block md:text-7xl"
+                    className="font-heading text-6xl font-bold leading-none text-gold/10 md:text-7xl"
                     aria-hidden="true"
                   >
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold/60">
-                      {eyebrow}
-                    </p>
-                    <h2 className="mt-1 font-heading text-2xl font-bold uppercase tracking-[0.1em] text-gold">
-                      {heading}
-                    </h2>
-                    <div className="mt-3 h-px w-12 bg-gold/30" />
-                    <RichText data={about[key]} className="mt-4" />
-                    {key === 'achievements' ? <RulerTimeline /> : null}
-                  </div>
+                  <p className="mt-3 text-xs font-semibold uppercase tracking-[0.25em] text-gold/60">
+                    {eyebrow}
+                  </p>
+                  <h2 className="mt-1 font-heading text-2xl font-bold uppercase tracking-[0.1em] text-gold">
+                    {heading}
+                  </h2>
+                  <div className="mt-3 h-px w-12 bg-gold/30" />
+                </div>
+
+                {/* Reading column — sized and spaced for comfortable long-form
+                    reading, with a storybook-style drop cap opening the section */}
+                <div className="mt-8 max-w-2xl lg:mt-0">
+                  <RichText
+                    data={about[key]}
+                    className="prose-p:text-lg prose-p:leading-loose [&_p:first-of-type::first-letter]:float-left [&_p:first-of-type::first-letter]:mr-3 [&_p:first-of-type::first-letter]:mt-1 [&_p:first-of-type::first-letter]:font-heading [&_p:first-of-type::first-letter]:text-6xl [&_p:first-of-type::first-letter]:leading-[0.8] [&_p:first-of-type::first-letter]:text-gold"
+                  />
+                  {key === 'achievements' ? <RulerTimeline /> : null}
                 </div>
               </div>
             </section>

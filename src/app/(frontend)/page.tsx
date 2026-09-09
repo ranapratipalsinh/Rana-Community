@@ -134,11 +134,11 @@ export default async function HomePage() {
               </p>
             ) : null}
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/villages" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-                {t.exploreVillages}
-              </Link>
               <Link href="/about" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
                 {t.about}
+              </Link>
+              <Link href="/villages" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+                {t.exploreVillages}
               </Link>
             </div>
           </div>

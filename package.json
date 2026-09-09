@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "backup-db": "node scripts/backup-db.mjs",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "ci": "payload migrate && pnpm build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",

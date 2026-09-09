@@ -88,6 +88,24 @@ Three things need to be set up before this deploys correctly on a serverless hos
 3. **Run database migrations as part of every deploy.** Payload's automatic dev-mode schema push (the "Pulling schema from database..." prompt you see with `pnpm dev`) only happens in dev mode — production expects real migration files. This repo has an initial migration at `src/migrations/`, and `pnpm run ci` (`payload migrate && next build`) applies it before building. **You must override Vercel's Build Command** to `pnpm run ci` (Project → Settings → Build & Development Settings) — otherwise Vercel will just run `next build` with no tables ever created, and every database-backed page will fail to prerender (`Error occurred prerendering page "..."`) or 500 at runtime. Whenever you add or change a CMS field/collection going forward, generate a new migration locally first with `pnpm payload migrate:create` and commit it — don't rely on dev-mode schema push for anything that needs to reach production.
 4. **Media storage — code already handles this, you just need to connect a Blob store.** `@payloadcms/storage-vercel-blob` is wired into `payload.config.ts` for both the `Media` and `Documents` collections, but only activates when `BLOB_READ_WRITE_TOKEN` is set — without it (e.g. local dev), uploads fall back to Payload's default local disk storage, which is fine locally but doesn't persist on Vercel's read-only, ephemeral filesystem (every upload would 500 or 404 without this). To connect it: Vercel → your project → **Storage tab → Create Database → Blob**, then connect it to this project — Vercel auto-injects `BLOB_READ_WRITE_TOKEN` for you, no manual env var needed. Redeploy after connecting it.
 
+## ⚠️ Always back up before running a migration against production
+
+**On 9 Sep 2026, a migration destroyed real production content** (village names, About Us text, committee member names, and more) with no warning. The cause: Payload's own migration generator, when a field is changed to `localized: true` (needed for the multilingual/i18n feature), generates a migration that does `DROP COLUMN` on the old plain-text column and creates a new per-language table — **without copying the existing values across first**. This can happen again with any future schema change that Payload auto-generates a migration for, not just localization — there's no reliable way to eyeball a generated migration file and be sure it's safe.
+
+**The rule, no exceptions:** before running `payload migrate` (or `pnpm run ci`, which runs it) against the production database, always take a full backup first:
+
+```bash
+pnpm backup-db "<production DATABASE_URL>"
+```
+
+This writes a timestamped `pg_dump` file to `backups/` (git-ignored — these can contain real user data and shouldn't be committed). If anything goes wrong, restore it with:
+
+```bash
+pg_restore --clean --if-exists --no-owner --no-privileges --dbname "<DATABASE_URL>" backups/<file>.dump
+```
+
+This applies even to a migration that "looks" purely additive (new field, new collection) — the only way to be sure is to have a backup, since the generator's actual behavior isn't something to trust by reading the migration file alone.
+
 ## What's not built yet
 
 Launch itself (Phase 5) — collecting real content, final QA, and production deployment (see "Deploying to production" above for the concrete blockers). A few Phase 4 items are deliberately deferred rather than built speculatively: automated backups (depends on the still-open hosting decision), analytics (not yet confirmed as required), and Gujarati language support (scope not yet confirmed). The multi-role admin model, membership directory, and other roadmap items (Phase 6+) are explicitly out of scope until a future BRD/SAD revision approves them.

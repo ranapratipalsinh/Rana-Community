@@ -113,7 +113,7 @@ export default async function HomePage() {
         {/* Dark overlay for text legibility — strong on the left where the text sits, fading out so the background stays visible on the right */}
         <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/50 to-ink/10" />
 
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 py-20">
+        <div className="relative z-10 w-full px-4 py-20 sm:px-8 lg:px-16">
           <div className="max-w-2xl">
             {settings.tagline ? (
               <p className="mb-2 text-xs font-medium uppercase tracking-[0.3em] text-gold">

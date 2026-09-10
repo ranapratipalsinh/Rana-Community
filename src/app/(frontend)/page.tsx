@@ -92,7 +92,7 @@ export default async function HomePage() {
                 screen, so mobile gets its own image (or the same one, if no
                 mobile-specific version has been uploaded) via CSS visibility
                 rather than a JS viewport check. */}
-            <div className="block h-full w-full sm:hidden">
+            <div className="absolute inset-0 block sm:hidden">
               <HeroSlideshow
                 images={heroImagesMobile.map((img) => ({
                   url: img.url as string,
@@ -100,7 +100,7 @@ export default async function HomePage() {
                 }))}
               />
             </div>
-            <div className="hidden h-full w-full sm:block">
+            <div className="absolute inset-0 hidden sm:block">
               <HeroSlideshow
                 images={heroImages.map((img) => ({ url: img.url as string, alt: img.alt || '' }))}
               />
@@ -133,7 +133,7 @@ export default async function HomePage() {
                 {settings.home.heroSubheading}
               </p>
             ) : null}
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-35 flex flex-wrap gap-5">
               <Link href="/about" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
                 {t.about}
               </Link>

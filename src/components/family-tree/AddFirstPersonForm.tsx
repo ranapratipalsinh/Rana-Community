@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 import { createFirstPerson } from '@/lib/family-tree/adminActions'
 
@@ -9,6 +10,8 @@ export function AddFirstPersonForm({ villageId }: { villageId: number }) {
   const router = useRouter()
   const [fullName, setFullName] = useState('')
   const [gender, setGender] = useState<'male' | 'female' | 'other' | ''>('')
+  const [photo, setPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -23,6 +26,7 @@ export function AddFirstPersonForm({ villageId }: { villageId: number }) {
         villageId,
         fullName: fullName.trim(),
         gender: gender || undefined,
+        photo: photo ?? undefined,
       })
       if (result.success) {
         router.refresh()
@@ -64,6 +68,39 @@ export function AddFirstPersonForm({ villageId }: { villageId: number }) {
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium uppercase tracking-wide text-gold/70">
+            Photo
+          </label>
+          <div className="mt-1 flex items-center gap-3">
+            <span className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-gold/40 bg-ink-soft">
+              {photoPreview ? (
+                <Image
+                  src={photoPreview}
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="h-full w-full object-cover"
+                  unoptimized
+                />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-xs text-gold/40">
+                  —
+                </span>
+              )}
+            </span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0] ?? null
+                setPhoto(file)
+                setPhotoPreview(file ? URL.createObjectURL(file) : null)
+              }}
+              className="flex-1 text-xs text-gold/70 file:mr-2 file:border file:border-gold/30 file:bg-ink file:px-2 file:py-1 file:text-xs file:text-gold file:uppercase file:tracking-wide"
+            />
+          </div>
         </div>
       </div>
       {error ? <p className="mt-3 text-sm text-danger">{error}</p> : null}

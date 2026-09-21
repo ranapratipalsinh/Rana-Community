@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { Camera } from 'lucide-react'
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 
 import type { Media } from '@/payload-types'
@@ -8,10 +9,11 @@ import type { PersonNodeData } from '@/lib/family-tree/buildTree'
 
 export type AdminPersonNodeData = PersonNodeData & {
   onAddRelative: (relationType: 'parent' | 'spouse' | 'child') => void
+  onEditPhoto: () => void
 }
 
 export function AdminPersonNode({ data, selected }: NodeProps<Node<AdminPersonNodeData>>) {
-  const { member, onAddRelative } = data
+  const { member, onAddRelative, onEditPhoto } = data
   const photo = member.profilePhoto as Media | null
   const memberName =
     typeof member.fullName === 'string' && member.fullName.trim()
@@ -40,7 +42,12 @@ export function AdminPersonNode({ data, selected }: NodeProps<Node<AdminPersonNo
         </span>
       ) : null}
 
-      <div className="mx-auto h-11 w-11 overflow-hidden rounded-full border border-gold/50 bg-ivory sm:h-12 sm:w-12">
+      <button
+        type="button"
+        onClick={onEditPhoto}
+        title="Change photo"
+        className="group/photo relative mx-auto block h-11 w-11 overflow-hidden rounded-full border border-gold/50 bg-ivory sm:h-12 sm:w-12"
+      >
         {photo?.url ? (
           <Image
             src={photo.url}
@@ -54,7 +61,10 @@ export function AdminPersonNode({ data, selected }: NodeProps<Node<AdminPersonNo
             {memberName.charAt(0)}
           </div>
         )}
-      </div>
+        <span className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover/photo:opacity-100">
+          <Camera size={16} className="text-white" />
+        </span>
+      </button>
 
       <p className="mt-1 truncate text-sm font-semibold text-ink">{memberName}</p>
       {years ? <p className="text-xs text-charcoal/60">{years}</p> : null}

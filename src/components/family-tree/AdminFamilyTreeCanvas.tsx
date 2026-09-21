@@ -8,6 +8,7 @@ import '@xyflow/react/dist/style.css'
 import type { PersonNodeData } from '@/lib/family-tree/buildTree'
 import { AdminPersonNode, type AdminPersonNodeData } from './AdminPersonNode'
 import { AddRelativeModal } from './AddRelativeModal'
+import { EditPersonPhotoModal } from './EditPersonPhotoModal'
 import type { FamilyMember } from '@/payload-types'
 
 const nodeTypes = { person: AdminPersonNode }
@@ -51,6 +52,7 @@ function AdminFamilyTreeCanvasInner({
     anchor: FamilyMember
     relationType: 'parent' | 'spouse' | 'child'
   } | null>(null)
+  const [photoTarget, setPhotoTarget] = useState<FamilyMember | null>(null)
 
   const nodes: Node<AdminPersonNodeData>[] = useMemo(
     () =>
@@ -60,6 +62,7 @@ function AdminFamilyTreeCanvasInner({
           ...node.data,
           onAddRelative: (relationType: 'parent' | 'spouse' | 'child') =>
             setModal({ anchor: node.data.member, relationType }),
+          onEditPhoto: () => setPhotoTarget(node.data.member),
         },
       })),
     [initialNodes],
@@ -67,6 +70,11 @@ function AdminFamilyTreeCanvasInner({
 
   const handleCreated = useCallback(() => {
     setModal(null)
+    router.refresh()
+  }, [router])
+
+  const handlePhotoUpdated = useCallback(() => {
+    setPhotoTarget(null)
     router.refresh()
   }, [router])
 
@@ -102,6 +110,14 @@ function AdminFamilyTreeCanvasInner({
           existingMembers={members}
           onClose={() => setModal(null)}
           onCreated={handleCreated}
+        />
+      ) : null}
+
+      {photoTarget ? (
+        <EditPersonPhotoModal
+          person={photoTarget}
+          onClose={() => setPhotoTarget(null)}
+          onUpdated={handlePhotoUpdated}
         />
       ) : null}
     </div>

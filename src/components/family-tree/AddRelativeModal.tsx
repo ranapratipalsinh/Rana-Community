@@ -32,6 +32,8 @@ export function AddRelativeModal({
   const [gender, setGender] = useState<'male' | 'female' | 'other' | ''>('')
   const [birthYear, setBirthYear] = useState('')
   const [deathYear, setDeathYear] = useState('')
+  const [photo, setPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [existingId, setExistingId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -72,6 +74,7 @@ export function AddRelativeModal({
                 gender: gender || undefined,
                 birthYear: birthYear ? Number(birthYear) : undefined,
                 deathYear: deathYear ? Number(deathYear) : undefined,
+                photo: photo ?? undefined,
               }
             : undefined,
       })
@@ -168,9 +171,42 @@ export function AddRelativeModal({
                 />
               </div>
             </div>
+            <div>
+              <label className="text-xs font-medium uppercase tracking-wide text-gold/70">
+                Photo
+              </label>
+              <div className="mt-1 flex items-center gap-3">
+                <span className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-gold/40 bg-ink-soft">
+                  {photoPreview ? (
+                    <Image
+                      src={photoPreview}
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="h-full w-full object-cover"
+                      unoptimized
+                    />
+                  ) : (
+                    <span className="flex h-full w-full items-center justify-center text-xs text-gold/40">
+                      —
+                    </span>
+                  )}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] ?? null
+                    setPhoto(file)
+                    setPhotoPreview(file ? URL.createObjectURL(file) : null)
+                  }}
+                  className="flex-1 text-xs text-gold/70 file:mr-2 file:border file:border-gold/30 file:bg-ink file:px-2 file:py-1 file:text-xs file:text-gold file:uppercase file:tracking-wide"
+                />
+              </div>
+            </div>
             <p className="text-xs text-gold/60">
-              Photo, biography and publish status can be added afterward from this person&apos;s
-              full record.
+              Biography and publish status can be added afterward from this person&apos;s full
+              record.
             </p>
           </div>
         ) : (

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { getPayloadClient } from '@/lib/payload'
-import { BranchFirstTree } from '@/components/family-tree/BranchFirstTree'
+import { FamilyTreeViewSwitcher } from '@/components/family-tree/FamilyTreeViewSwitcher'
 import type { FamilyMember, FamilyRelationship, Village } from '@/payload-types'
 
 type Params = { slug: string }
@@ -89,7 +89,7 @@ export default async function VillageFamilyTreePage({ params }: { params: Promis
           <p className="mt-3 text-sm leading-6 text-ivory/70">The complete family relationship record currently maintained by the community.</p>
         </div>
         <div className="overflow-hidden border border-gold/25 bg-ink-card shadow-card">
-          <BranchFirstTree villageName={villageName} members={typedMembers} relationships={typedRelationships} rootName={root?.fullName} rootChildren={rootChildren} />
+          <FamilyTreeViewSwitcher villageName={villageName} members={typedMembers} relationships={typedRelationships} rootName={root?.fullName} rootChildren={rootChildren} />
         </div>
       </div>
     </section>

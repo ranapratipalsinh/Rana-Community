@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { getPayloadClient } from '@/lib/payload'
-import { BranchFirstTree } from '@/components/family-tree/BranchFirstTree'
-import type { FamilyMember, FamilyRelationship, Village } from '@/payload-types'
+import { FamilyTreeTabs } from '@/components/family-tree/FamilyTreeTabs'
+import type { FamilyMember, FamilyRelationship, Media, Village } from '@/payload-types'
 
 type Params = { slug: string }
 
@@ -59,6 +59,14 @@ export default async function VillageFamilyTreePage({ params }: { params: Promis
         .sort((a, b) => a.name.localeCompare(b.name))
     : []
 
+  const originalImageDoc = village.originalFamilyTreeImage as Media | null
+  const originalImage =
+    originalImageDoc?.url
+      ? { url: originalImageDoc.url, alt: `Original family tree of ${villageName} village` }
+      : null
+  const hasImage = Boolean(originalImage)
+  const hasInteractiveData = typedMembers.length > 0
+
   return (
     <section className="bg-ink">
       <div className="border-b border-gold/20 bg-ink-soft px-4 py-7 text-gold sm:py-9">
@@ -86,9 +94,23 @@ export default async function VillageFamilyTreePage({ params }: { params: Promis
           <h2 className="mt-2 font-heading text-2xl font-bold uppercase tracking-[0.08em] text-gold sm:text-3xl">Our family tree</h2>
           <p className="mt-3 text-sm leading-6 text-ivory/70">The complete family relationship record currently maintained by the community.</p>
         </div>
-        <div className="overflow-hidden border border-gold/25 bg-ink-card shadow-card">
-          <BranchFirstTree villageName={villageName} members={typedMembers} relationships={typedRelationships} rootName={root?.fullName} rootChildren={rootChildren} />
-        </div>
+        {hasImage || hasInteractiveData ? (
+          <FamilyTreeTabs
+            villageName={villageName}
+            originalImage={originalImage}
+            members={typedMembers}
+            relationships={typedRelationships}
+            rootName={root?.fullName}
+            rootChildren={rootChildren}
+          />
+        ) : (
+          <div className="border border-gold/25 bg-ink-card px-6 py-16 text-center">
+            <p className="font-heading text-lg text-gold">Family Tree Coming Soon</p>
+            <p className="mt-2 text-sm text-gold/60">
+              Family records for this village are currently being digitized.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   )

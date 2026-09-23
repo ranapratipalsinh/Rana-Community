@@ -265,6 +265,10 @@ export interface Village {
     email?: string | null;
     address?: string | null;
   };
+  /**
+   * JPG, PNG, WEBP, or PDF. Leave empty if none exists yet.
+   */
+  originalFamilyTreeImage?: (number | null) | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -709,6 +713,7 @@ export interface VillagesSelect<T extends boolean = true> {
         email?: T;
         address?: T;
       };
+  originalFamilyTreeImage?: T;
   meta?:
     | T
     | {

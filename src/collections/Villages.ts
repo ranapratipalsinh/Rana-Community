@@ -145,6 +145,25 @@ export const Villages: CollectionConfig = {
       ],
     },
     {
+      type: 'collapsible',
+      label: 'Family Tree',
+      admin: {
+        description:
+          'Upload a scan/photo of the original historical family-tree document for this village. Shown as the default view on the public Family Tree page — the existing interactive tree (Family Members + Family Relationships) works independently and doesn\'t need to be filled in for this to display.',
+      },
+      fields: [
+        {
+          name: 'originalFamilyTreeImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Original Family Tree Image',
+          admin: {
+            description: 'JPG, PNG, WEBP, or PDF. Leave empty if none exists yet.',
+          },
+        },
+      ],
+    },
+    {
       name: 'meta',
       type: 'group',
       label: 'SEO',

@@ -70,9 +70,7 @@ export default async function VillageFamilyTreePage({ params }: { params: Promis
           </nav>
           <div className="mt-5 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold/70">A family united through generations</p>
-              <h1 className="mt-2 font-heading text-3xl font-bold uppercase tracking-[0.08em] text-gold sm:text-4xl">{villageName}</h1>
-              <p className="mt-2 max-w-xl text-sm leading-6 text-ivory/75">Explore the family heritage of {villageName} through its generations and relationships.</p>
+              <h1 className="font-heading text-3xl font-bold uppercase tracking-[0.08em] text-gold sm:text-4xl">{villageName}</h1>
             </div>
             <Link href={`/villages/${village.slug}`} className="inline-flex min-h-11 items-center justify-center border border-gold/40 px-4 text-sm text-gold transition-colors hover:border-gold hover:bg-gold/10">Back to village</Link>
           </div>

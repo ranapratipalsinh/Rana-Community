@@ -72,6 +72,11 @@ export async function addRelative(input: AddRelativeInput): Promise<AddRelativeR
 
       const created = await payload.create({
         collection: 'family-members',
+        // fullName is a localized field — the Local API needs an explicit
+        // locale or it silently drops the value instead of writing it to
+        // the default locale. This was a real bug: every person created
+        // through this builder ended up with a blank name.
+        locale: 'en',
         data: {
           fullName: input.newPerson.fullName.trim(),
           village: input.villageId,
@@ -163,6 +168,8 @@ export async function createFirstPerson(
 
     const created = await payload.create({
       collection: 'family-members',
+      // Same locale requirement as addRelative — see comment there.
+      locale: 'en',
       data: {
         fullName: input.fullName.trim(),
         village: input.villageId,

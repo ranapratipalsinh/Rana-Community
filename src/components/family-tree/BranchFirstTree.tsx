@@ -20,13 +20,6 @@ type BranchFirstTreeProps = {
   rootChildren: Array<{ id: number; name: string }>
 }
 
-const sampleBranches: Branch[] = [
-  { name: 'Rana Branch', tone: 'green', families: 24, members: 128 },
-  { name: 'Solanki Branch', tone: 'amber', families: 18, members: 96 },
-  { name: 'Vaghela Branch', tone: 'red', families: 21, members: 110 },
-  { name: 'Chauhan Branch', tone: 'blue', families: 16, members: 84 },
-]
-
 const toneClasses: Record<Branch['tone'], string> = {
   green: 'border-emerald-300/60 bg-emerald-950/55',
   amber: 'border-amber-200/60 bg-amber-950/45',
@@ -102,9 +95,11 @@ export function BranchFirstTree({ villageName, members, relationships, rootName,
     if (!children.includes(childId)) children.push(childId)
     childrenByParent.set(parentId, children)
   })
-  const branches: Branch[] = rootChildren.length
-    ? rootChildren.map((child, index) => ({ name: child.name, rootId: child.id, tone: index % 2 === 0 ? 'green' : 'amber' }))
-    : sampleBranches
+  const branches: Branch[] = rootChildren.map((child, index) => ({
+    name: child.name,
+    rootId: child.id,
+    tone: index % 2 === 0 ? 'green' : 'amber',
+  }))
 
   const hasRealTree = Boolean(rootMember && rootChildren.length)
 
@@ -117,19 +112,31 @@ export function BranchFirstTree({ villageName, members, relationships, rootName,
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-gold/80">Family archive</p>
               <h2 className="mt-2 font-heading text-2xl font-semibold uppercase tracking-[0.08em] text-gold sm:text-3xl">{villageName}</h2>
             </div>
-            <span className="w-fit border border-gold/35 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold/80">
-              {hasRealTree ? 'Community record' : 'Sample layout'}
-            </span>
+            {hasRealTree ? (
+              <span className="w-fit border border-gold/35 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold/80">
+                Community record
+              </span>
+            ) : null}
           </div>
 
-          <div className="relative mt-10">
-            <div className="mx-auto w-full max-w-sm border border-gold/60 bg-ink/85 px-5 py-6 text-center shadow-[0_16px_50px_rgba(0,0,0,0.28)] sm:px-8">
-              <Users className="mx-auto h-8 w-8 text-gold/85" strokeWidth={1.4} aria-hidden="true" />
-              <p className="mt-3 font-heading text-xl text-ivory sm:text-2xl">{rootName || 'Original Ancestor'}</p>
-              <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-gold/75">Original ancestor</p>
-            </div>
+          {!rootName ? (
+            <p className="mt-10 text-center text-sm text-ivory/70">
+              No published family members yet for {villageName}.
+            </p>
+          ) : (
+            <div className="relative mt-10">
+              <div className="mx-auto w-full max-w-sm border border-gold/60 bg-ink/85 px-5 py-6 text-center shadow-[0_16px_50px_rgba(0,0,0,0.28)] sm:px-8">
+                <Users className="mx-auto h-8 w-8 text-gold/85" strokeWidth={1.4} aria-hidden="true" />
+                <p className="mt-3 font-heading text-xl text-ivory sm:text-2xl">{rootName}</p>
+                <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-gold/75">Original ancestor</p>
+              </div>
 
-            <div className="relative mx-auto mt-8 max-w-7xl pt-5">
+              {branches.length === 0 ? (
+                <p className="mt-8 text-center text-sm text-ivory/70">
+                  No family relationships have been recorded yet below {rootName}.
+                </p>
+              ) : (
+              <div className="relative mx-auto mt-8 max-w-7xl pt-5">
               <div className="absolute left-1/2 top-0 h-5 w-px -translate-x-1/2 bg-gold/65" aria-hidden="true" />
               <div className="absolute left-[calc(25%-3px)] right-[calc(25%-3px)] top-0 h-px bg-gold/65 sm:left-[calc(25%-6px)] sm:right-[calc(25%-6px)]" aria-hidden="true" />
               <div className="grid gap-3 sm:gap-6 sm:grid-cols-2 grid-cols-2">
@@ -167,8 +174,10 @@ export function BranchFirstTree({ villageName, members, relationships, rootName,
                   )
                 })}
               </div>
+              </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

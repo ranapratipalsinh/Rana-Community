@@ -86,20 +86,43 @@ export async function addRelative(input: AddRelativeInput): Promise<AddRelativeR
       targetPersonId = created.id
     }
 
+    // Relationships default to draft on a drafts-enabled collection unless
+    // explicitly published — unlike a new person (whose name/photo/bio
+    // deliberately stays private until reviewed), a relationship only
+    // becomes visible once both connected people are already published AND
+    // public, so publishing it immediately doesn't bypass that privacy
+    // gate. Leaving it as draft here was a real bug: it silently broke the
+    // public tree's parent-child structure for anything added through this
+    // builder, even when both people were fully public.
     if (input.relationType === 'parent') {
       await payload.create({
         collection: 'family-relationships',
-        data: { relationshipType: 'parent-child', parent: targetPersonId, child: input.anchorId },
+        data: {
+          relationshipType: 'parent-child',
+          parent: targetPersonId,
+          child: input.anchorId,
+          _status: 'published',
+        },
       })
     } else if (input.relationType === 'child') {
       await payload.create({
         collection: 'family-relationships',
-        data: { relationshipType: 'parent-child', parent: input.anchorId, child: targetPersonId },
+        data: {
+          relationshipType: 'parent-child',
+          parent: input.anchorId,
+          child: targetPersonId,
+          _status: 'published',
+        },
       })
     } else {
       await payload.create({
         collection: 'family-relationships',
-        data: { relationshipType: 'spouse', spouseA: input.anchorId, spouseB: targetPersonId },
+        data: {
+          relationshipType: 'spouse',
+          spouseA: input.anchorId,
+          spouseB: targetPersonId,
+          _status: 'published',
+        },
       })
     }
 

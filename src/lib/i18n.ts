@@ -52,8 +52,6 @@ const translations = {
   },
 } as const
 
-export type TranslationKey = keyof typeof translations.en
-
 export function isLocale(value: string | undefined): value is Locale {
   return Boolean(value && LOCALES.includes(value as Locale))
 }

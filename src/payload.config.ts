@@ -91,6 +91,10 @@ export default buildConfig({
               documents: true,
             },
             token: process.env.BLOB_READ_WRITE_TOKEN,
+            // Route large uploads (e.g. high-res scans of historical family-tree
+            // documents) directly from the browser to Blob storage, bypassing
+            // Vercel's serverless function body-size limit (~4.5MB) entirely.
+            clientUploads: true,
           }),
         ]
       : []),

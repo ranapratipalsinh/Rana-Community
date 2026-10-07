@@ -6,6 +6,7 @@ import { RichText } from '@/components/RichText'
 import { buttonVariants } from '@/components/ui/button'
 import { HeroSlideshow } from '@/components/site/HeroSlideshow'
 import { VillagesCarousel } from '@/components/site/VillagesCarousel'
+import { EventCard } from '@/components/events/EventCard'
 import type { Event, GalleryItem, Media, News as NewsItem, Village } from '@/payload-types'
 import { getTranslations } from '@/lib/i18n'
 import { getLocale } from '@/lib/i18n-server'
@@ -224,41 +225,11 @@ export default async function HomePage() {
                     View all →
                   </Link>
                 </div>
-                <ul className="mt-4 space-y-3">
-                  {events.map((event) => {
-                    const cover = event.coverImage as Media | null
-                    return (
-                      <li key={event.id}>
-                        <Link
-                          href={`/events/${event.slug}`}
-                          className="flex items-center gap-4 border border-gold/15 bg-ink-card p-4 transition-colors hover:border-gold/40"
-                        >
-                          {cover?.url ? (
-                            <span className="relative h-16 w-24 shrink-0 overflow-hidden bg-ink-soft">
-                              <Image
-                                src={cover.url}
-                                alt={cover.alt || event.title || 'Event'}
-                                fill
-                                sizes="96px"
-                                className="object-cover"
-                              />
-                            </span>
-                          ) : null}
-                          <span className="min-w-0">
-                            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">
-                              {new Date(event.date).toLocaleDateString('en-IN', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                              })}
-                            </p>
-                            <p className="mt-1 truncate font-medium text-gold">{event.title}</p>
-                          </span>
-                        </Link>
-                      </li>
-                    )
-                  })}
-                </ul>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {events.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
               </div>
             ) : null}
 

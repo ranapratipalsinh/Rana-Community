@@ -27,7 +27,7 @@ function EventCard({ event }: { event: Event }) {
   return (
     <Link href={`/events/${event.slug}`}>
       <Card>
-        <CardImage>
+        <CardImage className="aspect-video">
           {cover?.url ? (
             <Image
               src={cover.url}

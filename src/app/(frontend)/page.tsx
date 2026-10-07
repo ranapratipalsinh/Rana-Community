@@ -234,12 +234,12 @@ export default async function HomePage() {
                           className="flex items-center gap-4 border border-gold/15 bg-ink-card p-4 transition-colors hover:border-gold/40"
                         >
                           {cover?.url ? (
-                            <span className="relative h-16 w-16 shrink-0 overflow-hidden bg-ink-soft">
+                            <span className="relative h-16 w-24 shrink-0 overflow-hidden bg-ink-soft">
                               <Image
                                 src={cover.url}
                                 alt={cover.alt || event.title || 'Event'}
                                 fill
-                                sizes="64px"
+                                sizes="96px"
                                 className="object-cover"
                               />
                             </span>

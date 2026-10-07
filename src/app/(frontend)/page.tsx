@@ -225,23 +225,39 @@ export default async function HomePage() {
                   </Link>
                 </div>
                 <ul className="mt-4 space-y-3">
-                  {events.map((event) => (
-                    <li key={event.id}>
-                      <Link
-                        href={`/events/${event.slug}`}
-                        className="block border border-gold/15 bg-ink-card p-4 transition-colors hover:border-gold/40"
-                      >
-                        <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">
-                          {new Date(event.date).toLocaleDateString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                          })}
-                        </p>
-                        <p className="mt-1 font-medium text-gold">{event.title}</p>
-                      </Link>
-                    </li>
-                  ))}
+                  {events.map((event) => {
+                    const cover = event.coverImage as Media | null
+                    return (
+                      <li key={event.id}>
+                        <Link
+                          href={`/events/${event.slug}`}
+                          className="flex items-center gap-4 border border-gold/15 bg-ink-card p-4 transition-colors hover:border-gold/40"
+                        >
+                          {cover?.url ? (
+                            <span className="relative h-16 w-16 shrink-0 overflow-hidden bg-ink-soft">
+                              <Image
+                                src={cover.url}
+                                alt={cover.alt || event.title || 'Event'}
+                                fill
+                                sizes="64px"
+                                className="object-cover"
+                              />
+                            </span>
+                          ) : null}
+                          <span className="min-w-0">
+                            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">
+                              {new Date(event.date).toLocaleDateString('en-IN', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                              })}
+                            </p>
+                            <p className="mt-1 truncate font-medium text-gold">{event.title}</p>
+                          </span>
+                        </Link>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             ) : null}
